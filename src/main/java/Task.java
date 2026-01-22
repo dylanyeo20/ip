@@ -15,6 +15,8 @@ public class Task {
 
     }
 
+
+
     public void markAsDone() {
         this.isDone = true;
         System.out.println("Nice! I've marked this task as done:");
@@ -43,6 +45,14 @@ public class Task {
 
     public static int totalTask() {
         return count;
+    }
+
+    public static void reduceTask() {
+        count--;
+    }
+
+    public void reduceIndex() {
+        this.idx--;
     }
 
 
