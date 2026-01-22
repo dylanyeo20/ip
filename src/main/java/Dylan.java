@@ -22,28 +22,36 @@ public class Dylan {
 
         String input;
         while(true) {
-            input = sc.nextLine();
+            input = sc.next();
 
             if (input.equals("bye")) break;
 
             System.out.println(line);
             if (input.equals("list")) print(listOfThingsToDo);
-            else {
-                String[] inputArray = input.split(" ");
-                if (inputArray[0].equals("mark")) {
-                    int index  = Integer.parseInt(inputArray[1]) - 1;
-                    if (index < 0 || index >= Task.totalTask()) continue;
 
-                    listOfThingsToDo.get(index).markAsDone();
-                }  else if (inputArray[0].equals("unmark")) {
-                    int index  = Integer.parseInt(inputArray[1]) - 1;
-                    if (index < 0 || index >= Task.totalTask()) continue;
+            else if (input.equals("mark")){
+                int index  = sc.nextInt() - 1;
+                if (index < 0 || index >= Task.totalTask()) continue;
+                listOfThingsToDo.get(index).markAsDone();
 
-                    listOfThingsToDo.get(index).unmarkAsDone();
-                } else { //else we just add new task
-                    System.out.println("added: " + input);
-                    listOfThingsToDo.add(new Task(input));
-                }
+            }  else if (input.equals("unmark")) {
+                int index  = sc.nextInt() - 1;
+                if (index < 0 || index >= Task.totalTask()) continue;
+                listOfThingsToDo.get(index).unmarkAsDone();
+
+            } else if (input.equals("todo")){//else we just add new task
+                String name = sc.nextLine();
+                listOfThingsToDo.add(new ToDos(name));
+            } else if (input.equals("deadline")) {
+                String[] nameAndBy = sc.nextLine().split("/");
+                String name = nameAndBy[0], by = nameAndBy[1].substring(2);
+
+
+                listOfThingsToDo.add(new Deadlines(name, by));
+            } else if (input.equals("event")) {
+                String[] nameAndFromAndTo = sc.nextLine().split("/");
+                String name = nameAndFromAndTo[0], from = nameAndFromAndTo[1].substring(4), to = nameAndFromAndTo[2].substring(2);
+                listOfThingsToDo.add(new Event(name, from, to));
             }
             System.out.println(line);
 

@@ -1,41 +1,44 @@
 import java.util.*;
 
 public class Task {
-    private String name;
+    protected String name;
     private boolean isDone;
-    private int idx;
+    protected int idx;
+    char type;
     private static int count = 0;
 
-    public Task(String name) {
+    public Task(String name, char type) {
         this.name = name;
         isDone = false;
         idx = ++count;
+        this.type = type;
+
     }
 
     public void markAsDone() {
         this.isDone = true;
         System.out.println("Nice! I've marked this task as done: ");
-        printStatus();
+        System.out.println(this.getStatus());
     }
 
     public void unmarkAsDone() {
         this.isDone = false;
         System.out.println("OK, I've marked this task as not done yet:");
-        printStatus();
+        System.out.println(getStatus());
 
     }
     public void printTask() {
-        String output = String.format("%d. [%s] %s",this.idx, getStatus(), this.name);
+        String output = String.format("%d. %s",this.idx, getStatus());
         System.out.println(output);
     }
 
-    private String getStatus() {
+    protected String isDone() {
         return this.isDone ? "x" : " ";
     }
 
-    public void printStatus() {
-        String output = String.format("[%s] %s", getStatus(), this.name);
-        System.out.println(output);
+    public String getStatus() {
+        String output = String.format("[%c][%s] %s",this.type, isDone(), this.name);
+        return output;
     }
 
     public static int totalTask() {
