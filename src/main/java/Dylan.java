@@ -1,6 +1,13 @@
-import java.util.Scanner;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class Dylan {
+    public static void print(ArrayList<String> xs) {
+        int i = 1;
+        for(String s : xs) {
+            System.out.println(i++ + ". " + s);
+        }
+    }
     public static void main(String[] args) {
         String chatbot = "Dylan", line = "____________________________________________________________\n";
         System.out.println(String.format("____________________________________________________________\n" +
@@ -9,17 +16,30 @@ public class Dylan {
                 "____________________________________________________________\n", chatbot));
 
         Scanner sc = new Scanner(System.in);
+        ArrayList<String> listOfThingsToDo = new ArrayList<>();
 
-        String input = "";
-        while(!input.equals("bye")) {
+
+        String input;
+        while(true) {
             input = sc.nextLine();
-            System.out.println(line + input + "\n" + line);
+
+            if (input.equals("bye")) break;
+
+            System.out.println(line);
+            if (input.equals("list")) print(listOfThingsToDo);
+            else {
+                System.out.println("added: " + input + "\n");
+                listOfThingsToDo.add(input);
+            }
+            System.out.println(line);
+
+
+
         }
 
 
-        System.out.println(
-                " Bye. Hope to see you again soon!\n" +
-                "____________________________________________________________\n");
+        System.out.println(line +
+                " Bye. Hope to see you again soon!\n" + line);
 
 
     }
