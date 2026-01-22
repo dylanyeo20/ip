@@ -10,6 +10,42 @@ public class Dylan {
         }
     }
 
+    public static void doCommand(String command, ArrayList<Task> listOfThingsToDo) throws Exception {
+        Scanner sc = new Scanner(command);
+        String input = sc.next();
+
+        if (input.equals("list")) print(listOfThingsToDo);
+
+        else if (input.equals("mark")){
+            if (!sc.hasNextInt()) throw new DukeException(" Please give an index to Mark!");
+            int index  = sc.nextInt() - 1;
+            if (index < 0 || index >= Task.totalTask()) throw new DukeException(index + " is a invalid index!");
+            listOfThingsToDo.get(index).markAsDone();
+
+        }  else if (input.equals("unmark")) {
+            if (!sc.hasNextInt()) throw new DukeException(" Please give an index to unMark!");
+            int index  = sc.nextInt() - 1;
+            if (index < 0 || index >= Task.totalTask()) throw new DukeException(index + " is a invalid index!");
+            listOfThingsToDo.get(index).unmarkAsDone();
+
+        } else if (input.equals("todo")){//else we just add new task
+            String name = sc.nextLine();
+            listOfThingsToDo.add(new ToDos(name));
+        } else if (input.equals("deadline")) {
+            String[] nameAndBy = sc.nextLine().split("/");
+            String name = nameAndBy[0], by = nameAndBy[1].substring(2);
+
+
+            listOfThingsToDo.add(new Deadlines(name, by));
+        } else if (input.equals("event")) {
+            String[] nameAndFromAndTo = sc.nextLine().split("/");
+            String name = nameAndFromAndTo[0], from = nameAndFromAndTo[1].substring(4), to = nameAndFromAndTo[2].substring(2);
+            listOfThingsToDo.add(new Event(name, from, to));
+        } else {
+            throw new DukeException(" " + input + " is a invalid command!");
+        }
+    }
+
     public static void main(String[] args) {
         String chatbot = "Dylan", line = "____________________________________________________________";
         System.out.println(String.format("____________________________________________________________\n" +
@@ -22,38 +58,23 @@ public class Dylan {
 
         String input;
         while(sc.hasNext()) {
-            input = sc.next();
+            input = sc.nextLine();
 
             if (input.equals("bye")) break;
 
             System.out.println(line);
-            if (input.equals("list")) print(listOfThingsToDo);
 
-            else if (input.equals("mark")){
-                int index  = sc.nextInt() - 1;
-                if (index < 0 || index >= Task.totalTask()) continue;
-                listOfThingsToDo.get(index).markAsDone();
-
-            }  else if (input.equals("unmark")) {
-                int index  = sc.nextInt() - 1;
-                if (index < 0 || index >= Task.totalTask()) continue;
-                listOfThingsToDo.get(index).unmarkAsDone();
-
-            } else if (input.equals("todo")){//else we just add new task
-                String name = sc.nextLine();
-                listOfThingsToDo.add(new ToDos(name));
-            } else if (input.equals("deadline")) {
-                String[] nameAndBy = sc.nextLine().split("/");
-                String name = nameAndBy[0], by = nameAndBy[1].substring(2);
-
-
-                listOfThingsToDo.add(new Deadlines(name, by));
-            } else if (input.equals("event")) {
-                String[] nameAndFromAndTo = sc.nextLine().split("/");
-                String name = nameAndFromAndTo[0], from = nameAndFromAndTo[1].substring(4), to = nameAndFromAndTo[2].substring(2);
-                listOfThingsToDo.add(new Event(name, from, to));
+            try {
+                doCommand(input, listOfThingsToDo);
+            } catch (DukeException e) {
+                System.out.println("Error: " + e.getMessage());
+                continue;
+            } catch (Exception e) {
+                System.out.println("Unexpected error: " + e.getMessage());
+            } finally {
+                System.out.println(line);
             }
-            System.out.println(line);
+
 
         }
 
