@@ -10,6 +10,20 @@ public class Dylan {
         }
     }
 
+    public static void deleteTask(ArrayList<Task> xs, int index) {
+        String taskStatus = xs.get(index).getStatus();
+        xs.remove(index);
+        Task.reduceTask();
+        System.out.println("Noted. I've removed this task: \n" + taskStatus);
+        System.out.println("Now you have " + Task.totalTask() + " tasks in the list.");
+
+        //Update index fields in each of the tasks
+        for(int i = index; i < xs.size(); i++) {
+            Task t = xs.get(i);
+            t.reduceIndex();
+        }
+    }
+
     public static void doCommand(String command, ArrayList<Task> listOfThingsToDo) throws Exception {
         Scanner sc = new Scanner(command);
         String input = sc.next();
@@ -17,16 +31,22 @@ public class Dylan {
         if (input.equals("list")) print(listOfThingsToDo);
 
         else if (input.equals("mark")){
-            if (!sc.hasNextInt()) throw new DukeException(" Please give an index to Mark!");
+            if (!sc.hasNextInt()) throw new DukeException(" Please give an index of task to Mark!");
             int index  = sc.nextInt() - 1;
-            if (index < 0 || index >= Task.totalTask()) throw new DukeException(index + " is a invalid index!");
+            if (index < 0 || index >= Task.totalTask()) throw new DukeException((index + 1) + " is a invalid index!");
             listOfThingsToDo.get(index).markAsDone();
 
         }  else if (input.equals("unmark")) {
-            if (!sc.hasNextInt()) throw new DukeException(" Please give an index to unMark!");
-            int index  = sc.nextInt() - 1;
-            if (index < 0 || index >= Task.totalTask()) throw new DukeException(index + " is a invalid index!");
+            if (!sc.hasNextInt()) throw new DukeException(" Please give an index of task to unMark!");
+            int index = sc.nextInt() - 1;
+            if (index < 0 || index >= Task.totalTask()) throw new DukeException((index + 1) + " is a invalid index!");
             listOfThingsToDo.get(index).unmarkAsDone();
+        } else if (input.equals("delete")) {
+            if (!sc.hasNextInt()) throw new DukeException(" Please give an index of task to delete!");
+            int index = sc.nextInt() - 1;
+            if (index < 0 || index >= Task.totalTask()) throw new DukeException((index + 1) + " is a invalid index!");
+
+            deleteTask(listOfThingsToDo, index);
 
         } else if (input.equals("todo")){//else we just add new task
             if (!sc.hasNext()) throw new DukeException(" Please give description of task");
