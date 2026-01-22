@@ -4,7 +4,7 @@ import java.util.*;
 public class Dylan {
 
     public static void print(ArrayList<Task> listOfThingsToDo) {
-        System.out.println("Here are the tasks in your list: ");
+        System.out.println("Here are the tasks in your list:");
         for(Task t : listOfThingsToDo) {
             t.printTask();
         }
@@ -21,7 +21,7 @@ public class Dylan {
         ArrayList<Task> listOfThingsToDo = new ArrayList<>();
 
         String input;
-        while(true) {
+        while(sc.hasNext()) {
             input = sc.next();
 
             if (input.equals("bye")) break;
@@ -58,6 +58,6 @@ public class Dylan {
         }
 
         System.out.println(line +
-                " Bye. Hope to see you again soon!\n" + line);
+                "\n Bye. Hope to see you again soon!\n" + line);
     }
 }
