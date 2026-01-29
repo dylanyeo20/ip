@@ -1,7 +1,11 @@
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class Event extends Task{
 
-    String from, to;
-    public Event(String name, String from, String to) {
+    LocalDateTime from, to;
+    public Event(String name, LocalDateTime from, LocalDateTime to) {
         super(name, 'E');
         this.from = from;
         this.to = to;
@@ -10,7 +14,7 @@ public class Event extends Task{
 
     }
 
-    public Event(String name, String from, String to, boolean isTaskDone) {
+    public Event(String name, LocalDateTime from, LocalDateTime to, boolean isTaskDone) {
         super(name, 'E', isTaskDone);
         this.from = from;
         this.to = to;
@@ -18,14 +22,14 @@ public class Event extends Task{
 
     @Override
     public String getStatus() {
-        String output = String.format("%s (from: %s to: %s)", super.getStatus(), from, to);
+        String output = String.format("%s (from: %s to: %s)", super.getStatus(), from.format(DATE_DISPLAY_FORMAT), to.format(DATE_DISPLAY_FORMAT));
         return output;
     }
 
     @Override
     public String dataInputString() {
         int isDone = (super.isDone ? 1 : 0);
-        return type + " | " + isDone + " | " + name + " | " + from + " | " + to;
+        return type + " | " + isDone + " | " + name + " | " + from.format(DATE_DATA_FORMAT) + " | " + to.format(DATE_DATA_FORMAT);
     }
 
 
