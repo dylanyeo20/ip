@@ -7,10 +7,21 @@ public class Deadlines extends Task{
         System.out.println(output);
     }
 
+    public Deadlines(String name, String by, boolean isTaskDone) {
+        super(name, 'D', isTaskDone);
+        this.by = by;
+    }
+
     @Override
     public String getStatus() {
         String output = String.format("%s (by: %s)", super.getStatus(), this.by);
         return output;
+    }
+
+    @Override
+    public String dataInputString() {
+        int isDone = (super.isDone ? 1 : 0);
+        return type + " | " + isDone + " | " + name + " | " + by;
     }
 
 }

@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Task {
     protected String name;
-    private boolean isDone;
+    protected boolean isDone;
     protected int idx;
     char type;
     private static int count = 0;
@@ -12,7 +12,13 @@ public class Task {
         isDone = false;
         idx = ++count;
         this.type = type;
+    }
 
+    public Task(String name, char type, boolean isDone) {
+        this.name = name;
+        this.isDone = isDone;
+        idx = ++count;
+        this.type = type;
     }
 
 
@@ -53,6 +59,11 @@ public class Task {
 
     public void reduceIndex() {
         this.idx--;
+    }
+
+    public String dataInputString() {
+        int isDone = (this.isDone ? 1 : 0);
+        return "Task" + " | " + isDone + " | " + name + "\n";
     }
 
 
