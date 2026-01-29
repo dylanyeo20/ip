@@ -4,13 +4,20 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.io.File;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 
 public class Dylan {
 
-    public static final String filePath = "./src/main/java/data/dylan.txt";
+    public static final String FILEPATH = "./src/main/java/data/dylan.txt";
+    public static final DateTimeFormatter FORMATTER =
+            DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
 
     public static void print(ArrayList<Task> listOfThingsToDo) {
         System.out.println("Here are the tasks in your list:");
@@ -72,10 +79,15 @@ public class Dylan {
             String[] nameAndBy = sc.nextLine().split(" /by ");
             if (nameAndBy.length != 2) throw new DukeException("Invalid command! <Description> /by <Deadline>");
             String name = nameAndBy[0].trim(), by = nameAndBy[1].trim();
+
             if (name.isBlank() || by.isBlank()) throw new DukeException("Name and By cannot be empty!");
+            
+            LocalDateTime dateTime = LocalDateTime.parse(by, FORMATTER);
 
 
-            listOfThingsToDo.add(new Deadlines(name, by));
+
+
+            listOfThingsToDo.add(new Deadlines(name, dateTime));
 
         } else if (input.equals("event")) {
             if (!sc.hasNext()) throw new DukeException(" Please give description, from, to of task");
@@ -85,7 +97,9 @@ public class Dylan {
             if (FromAndTo.length != 2) throw new DukeException("Invalid syntax! <Description> /from <from> /to <to>");
             String name = nameAndFromAndTo[0], from = FromAndTo[0], to = FromAndTo[1];
             if (name.isBlank() || from.isBlank() || to.isBlank()) throw new DukeException("Name, From, and To cannot be empty!");
-            listOfThingsToDo.add(new Event(name, from, to));
+            LocalDateTime fromDateTime = LocalDateTime.parse(from, FORMATTER),
+                    toDateTime = LocalDateTime.parse(to, FORMATTER);
+            listOfThingsToDo.add(new Event(name, fromDateTime, toDateTime));
 
         } else {
             throw new DukeException(" " + input + " is a invalid command!");
@@ -129,6 +143,12 @@ public class Dylan {
             if (by.isBlank()) {
                 throw new DukeException("dylan.txt data file is corrupted: Missing deadline for deadline event");
             }
+
+            try {
+                LocalDateTime.parse(by, FORMATTER);
+            } catch (DateTimeParseException e) {
+                System.out.println("dylan.txt data file is corrupted: Invalid Date format");
+            }
         }
 
         if (taskType.equals("E")) {
@@ -139,6 +159,13 @@ public class Dylan {
             String from = input[3], to = input[4];
             if (from.isBlank() || to.isBlank()) {
                 throw new DukeException("dylan.txt data file is corrupted: Missing From or To  for Event task");
+            }
+
+            try {
+                LocalDateTime.parse(from, FORMATTER);
+                LocalDateTime.parse(to, FORMATTER);
+            } catch (DateTimeParseException e) {
+                System.out.println("dylan.txt data file is corrupted: Invalid Date format");
             }
         }
     }
@@ -151,7 +178,7 @@ public class Dylan {
                 listOfString.add(task.dataInputString());
             }
 
-            Files.write(Paths.get(filePath), listOfString);
+            Files.write(Paths.get(FILEPATH), listOfString);
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -163,7 +190,7 @@ public class Dylan {
     //Creates directory if do not exist
     //Create dylan.txt if does not exist
     public static void initListOfThingsToDo(ArrayList<Task> listOfTasks) {
-        File file = new File(filePath);
+        File file = new File(FILEPATH);
 
         //Tries to create dylan.txt file if do not exit
         try {
@@ -186,12 +213,12 @@ public class Dylan {
                         listOfTasks.add(taskTodo);
                         break;
                     case "D":
-                        String by = inputTask[3];
+                        LocalDateTime by = LocalDateTime.parse(inputTask[3], FORMATTER);
                         Task taskDeadline = new Deadlines(taskName, by, isTaskDone);
                         listOfTasks.add(taskDeadline);
                         break;
                     case "E":
-                        String from = inputTask[3], to = inputTask[4];
+                        LocalDateTime from = LocalDateTime.parse(inputTask[3], FORMATTER), to = LocalDateTime.parse(inputTask[4], FORMATTER);
                         Task taskEvent = new Event(taskName, from, to, isTaskDone);
                         listOfTasks.add(taskEvent);
                         break;
@@ -240,6 +267,9 @@ public class Dylan {
             } catch (DukeException e) {
                 System.out.println("Error: " + e.getMessage());
                 continue;
+            } catch (DateTimeParseException e) {
+                System.out.println("Error: " + e.getMessage());
+                System.out.println("Please input Date & Time in: dd/mm/yyyy HHMM");
             } catch (Exception e) {
                 System.out.println("Unexpected error: " + e.getMessage());
             } finally {
