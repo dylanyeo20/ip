@@ -10,10 +10,22 @@ public class Event extends Task{
 
     }
 
+    public Event(String name, String from, String to, boolean isTaskDone) {
+        super(name, 'E', isTaskDone);
+        this.from = from;
+        this.to = to;
+    }
+
     @Override
     public String getStatus() {
         String output = String.format("%s (from: %s to: %s)", super.getStatus(), from, to);
         return output;
+    }
+
+    @Override
+    public String dataInputString() {
+        int isDone = (super.isDone ? 1 : 0);
+        return type + " | " + isDone + " | " + name + " | " + from + " | " + to;
     }
 
 
