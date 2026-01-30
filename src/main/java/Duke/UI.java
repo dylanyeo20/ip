@@ -8,8 +8,7 @@ import java.util.Scanner;
 
 public class UI {
     Scanner sc;
-    public static final DateTimeFormatter DATE_DATA_FORMATTER =
-            DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
+    public static final DateTimeFormatter DATE_DATA_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
 
     private static final String line = "____________________________________________________________";
 
@@ -19,9 +18,8 @@ public class UI {
 
     public void printWelcomeMessage() {
         String chatbot = "Dylan";
-        System.out.println(String.format("____________________________________________________________\n" +
-                " Hello! I'm %s\n" +
-                " What can I do for you?\n" +
+        System.out.println(String.format("____________________________________________________________\n" + " Hello! " +
+                "I'm %s\n" + " What can I do for you?\n" +
                 "____________________________________________________________\n", chatbot));
     }
 
@@ -32,7 +30,7 @@ public class UI {
 
     public void print(ArrayList<Task> listOfThingsToDo) {
         System.out.println("Here are the tasks in your list:");
-        for(Task t : listOfThingsToDo) {
+        for (Task t : listOfThingsToDo) {
             t.printTask();
         }
     }
@@ -41,10 +39,12 @@ public class UI {
     public void run(Storage storage, TaskList taskList) {
         String input;
 
-        while(sc.hasNext()) {
+        while (sc.hasNext()) {
             input = sc.nextLine();
 
-            if (input.equals("bye")) break;
+            if (input.equals("bye")) {
+                break;
+            }
 
             System.out.println(line);
 
@@ -55,7 +55,7 @@ public class UI {
             }
 
             try {
-                Parser.doCommand(input, storage, taskList);
+                Parser.doCommand(input, storage, taskList, this);
             } catch (DukeException e) {
                 System.out.println("Error: " + e.getMessage());
                 continue;
@@ -69,8 +69,7 @@ public class UI {
             }
         }
 
-        System.out.println(line +
-                "\n Bye. Hope to see you again soon!\n" + line);
+        System.out.println(line + "\n Bye. Hope to see you again soon!\n" + line);
     }
 
 }

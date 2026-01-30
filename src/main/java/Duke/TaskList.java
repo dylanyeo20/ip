@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class TaskList {
     ArrayList<Task> listOfTasks;
+
     public TaskList(ArrayList<Task> listOfTasks) {
         this.listOfTasks = listOfTasks;
     }
@@ -21,7 +22,7 @@ public class TaskList {
         System.out.println("Now you have " + Task.totalTask() + " tasks in the list.");
 
         //Update index fields in each of the tasks
-        for(int i = index; i < listOfTasks.size(); i++) {
+        for (int i = index; i < listOfTasks.size(); i++) {
             Task t = listOfTasks.get(i);
             t.reduceIndex();
         }
@@ -34,18 +35,25 @@ public class TaskList {
         storage.updateDataFile(this);
     }
 
-    public void markAsDone(Storage storage,  int index) {
+    public void markAsDone(Storage storage, int index) {
         listOfTasks.get(index).markAsDone();
         storage.updateDataFile(this);
     }
 
-    public void unmarkAsDone(Storage storage,  int index) {
+    public void unmarkAsDone(Storage storage, int index) {
         listOfTasks.get(index).unmarkAsDone();
         storage.updateDataFile(this);
     }
 
-
-
+    public ArrayList<Task> findTask(String name) {
+        ArrayList<Task> resultList = new ArrayList<>();
+        for (Task task : listOfTasks) {
+            if (task.name.contains(name.trim())) {
+                resultList.add(task);
+            }
+        }
+        return resultList;
+    }
 
 
 }
