@@ -6,12 +6,14 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Represent user interface of chatbot.
+ * Handles user inputs and outputs.
+ */
 public class UI {
-    Scanner sc;
-    public static final DateTimeFormatter DATE_DATA_FORMATTER =
-            DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
+    private static final String LINE = "____________________________________________________________";
 
-    private static final String line = "____________________________________________________________";
+    private final Scanner sc;
 
     public UI() {
         sc = new Scanner(System.in);
@@ -30,6 +32,11 @@ public class UI {
         return instr;
     }
 
+    /**
+     * Print list of things to do (list command)
+     *
+     * @param listOfThingsToDo List of tasks to do.
+     */
     public void print(ArrayList<Task> listOfThingsToDo) {
         System.out.println("Here are the tasks in your list:");
         for(Task t : listOfThingsToDo) {
@@ -37,7 +44,14 @@ public class UI {
         }
     }
 
-
+    /**
+     * Runs the main loop of the chatbot.
+     * <p>
+     * Reads the input, and calls execute command in Parser
+     *
+     * @param storage
+     * @param taskList
+     */
     public void run(Storage storage, TaskList taskList) {
         String input;
 
@@ -46,11 +60,11 @@ public class UI {
 
             if (input.equals("bye")) break;
 
-            System.out.println(line);
+            System.out.println(LINE);
 
             if (input.equals("list")) {
                 print(taskList.get());
-                System.out.println(line);
+                System.out.println(LINE);
                 continue;
             }
 
@@ -65,12 +79,12 @@ public class UI {
             } catch (Exception e) {
                 System.out.println("Unexpected error: " + e.getMessage());
             } finally {
-                System.out.println(line);
+                System.out.println(LINE);
             }
         }
 
-        System.out.println(line +
-                "\n Bye. Hope to see you again soon!\n" + line);
+        System.out.println(LINE +
+                "\n Bye. Hope to see you again soon!\n" + LINE);
     }
 
 }

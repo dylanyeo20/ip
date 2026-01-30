@@ -1,4 +1,10 @@
 package Duke;
+
+import java.io.IOException;
+
+/**
+ * Main class of Chatbot
+ */
 public class Dylan {
     private static final String FILEPATH = "./src/main/java/data/dylan.txt";
 
@@ -6,23 +12,28 @@ public class Dylan {
     private Storage storage;
     private TaskList listOfThingsToDo;
 
-    public Dylan(String filePath) {
+    /**
+     * Constructs a Dylan chatbot instance and initializes UI, storage, and task list.
+     * @param filePath Path to the data file used for loading and saving tasks.
+     * @throws Exception if Storage or TaskList fails to initialize
+     */
+    public Dylan(String filePath) throws Exception {
         this.ui = new UI();
-        ui.printWelcomeMessage();
-        try {
-            this.storage = new Storage(filePath);
-            listOfThingsToDo = new TaskList(storage.loadTasks());
-        } catch (Exception e) {
-            System.out.println("Exiting: " + e.getMessage());
-            System.exit(0);
-        }
+        this.storage = new Storage(filePath);
+        listOfThingsToDo = new TaskList(storage.loadTasks());
     }
 
     private void run() {
+        ui.printWelcomeMessage();
         ui.run(this.storage, this.listOfThingsToDo);
     }
 
     public static void main(String[] args) {
-        new Dylan(FILEPATH).run();
+        try {
+            new Dylan(FILEPATH).run();
+        } catch (Exception e) {
+            System.out.println("Exiting: " + e.getMessage());
+            System.exit(0);
+        }
     }
 }
