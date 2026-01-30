@@ -1,13 +1,15 @@
 package Duke;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-public class Deadlines extends Task{
+
+public class Deadlines extends Task {
     LocalDateTime by;
+
     public Deadlines(String name, LocalDateTime by) {
         super(name, 'D');
         this.by = by;
-        String output = String.format("Got it. I've added this task:\n %s\nNow you have %d tasks in the list", getStatus(), totalTask());
+        String output = String.format("Got it. I've added this task:\n %s\nNow you have %d tasks in the list",
+                getStatus(), totalTask());
         System.out.println(output);
     }
 

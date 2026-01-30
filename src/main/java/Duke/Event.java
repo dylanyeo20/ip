@@ -1,14 +1,18 @@
 package Duke;
+
 import java.time.LocalDateTime;
 
-public class Event extends Task{
+public class Event extends Task {
 
     LocalDateTime from, to;
+
     public Event(String name, LocalDateTime from, LocalDateTime to) {
         super(name, 'E');
         this.from = from;
         this.to = to;
-        String output = String.format("Got it. I've added this task:\n %s\nNow you have %d tasks in the list", getStatus(), totalTask());
+        String output =
+                String.format("Got it. I've added this task:\n %s\nNow you have %d tasks in the list", getStatus(),
+                        totalTask());
         System.out.println(output);
 
     }
@@ -21,7 +25,9 @@ public class Event extends Task{
 
     @Override
     public String getStatus() {
-        String output = String.format("%s (from: %s to: %s)", super.getStatus(), from.format(DATE_DISPLAY_FORMAT), to.format(DATE_DISPLAY_FORMAT));
+        String output =
+                String.format("%s (from: %s to: %s)", super.getStatus(), from.format(DATE_DISPLAY_FORMAT),
+                        to.format(DATE_DISPLAY_FORMAT));
         return output;
     }
 
