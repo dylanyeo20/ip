@@ -13,12 +13,12 @@ public class Parser {
     /**
      * Checks validity of command and execute them using respective APIs.
      *
-     * @param command User input from UI
-     * @param storage Data file
+     * @param command  User input from UI
+     * @param storage  Data file
      * @param taskList List of all tasks
      * @throws Exception If command is invalid
      */
-    public static void doCommand(String command, Storage storage, TaskList taskList) throws Exception {
+    public static void doCommand(String command, Storage storage, TaskList taskList, UI ui) throws Exception {
         Scanner sc = new Scanner(command);
         String input = sc.next();
 
@@ -93,12 +93,10 @@ public class Parser {
             if (!sc.hasNext()) {
                 throw new DukeException(" Please give description, from, to of task");
             }
-
             String[] nameAndFromAndTo = sc.nextLine().split(" /from ");
             if (nameAndFromAndTo.length != 2) {
                 throw new DukeException("Invalid syntax! <Description> /from <from> /to <to>");
             }
-
             String[] FromAndTo = nameAndFromAndTo[1].split(" /to ");
             if (FromAndTo.length != 2) {
                 throw new DukeException("Invalid syntax! <Description> /from <from> /to <to>");
@@ -112,6 +110,10 @@ public class Parser {
             LocalDateTime fromDateTime = LocalDateTime.parse(from, DATE_DATA_FORMATTER), toDateTime =
                     LocalDateTime.parse(to, DATE_DATA_FORMATTER);
             taskList.addTask(storage, new Event(name1, fromDateTime, toDateTime));
+            break;
+        case "find":
+            String findName = sc.nextLine();
+            ui.print(taskList.findTask(findName));
             break;
 
         default:

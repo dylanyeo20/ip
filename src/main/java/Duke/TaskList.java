@@ -20,7 +20,7 @@ public class TaskList {
      * Deletes existing tasks from task list and update data file.
      *
      * @param storage Data file
-     * @param index Index of task to be removed
+     * @param index   Index of task to be removed
      */
     public void deleteTask(Storage storage, int index) {
         String taskStatus = listOfTasks.get(index).getStatus();
@@ -30,7 +30,7 @@ public class TaskList {
         System.out.println("Now you have " + Task.totalTask() + " tasks in the list.");
 
         //Update index fields in each of the tasks
-        for(int i = index; i < listOfTasks.size(); i++) {
+        for (int i = index; i < listOfTasks.size(); i++) {
             Task t = listOfTasks.get(i);
             t.reduceIndex();
         }
@@ -42,7 +42,7 @@ public class TaskList {
      * Add new task into task list and update data file.
      *
      * @param storage Data file
-     * @param task New task to be added
+     * @param task    New task to be added
      */
     public void addTask(Storage storage, Task task) {
         this.listOfTasks.add(task);
@@ -53,22 +53,33 @@ public class TaskList {
      * Mark task as done and update data file
      *
      * @param storage Data file
-     * @param index Index of task to be mark as done
+     * @param index   Index of task to be mark as done
      */
-    public void markAsDone(Storage storage,  int index) {
+    public void markAsDone(Storage storage, int index) {
         listOfTasks.get(index).markAsDone();
         storage.updateDataFile(this);
     }
+
 
     /**
      * Mark task as not done and update data file
      *
      * @param storage Data file
-     * @param index Index of task to be mark as not done
+     * @param index   Index of task to be mark as not done
      */
-    public void unmarkAsDone(Storage storage,  int index) {
+    public void unmarkAsDone(Storage storage, int index) {
         listOfTasks.get(index).unmarkAsDone();
         storage.updateDataFile(this);
+    }
+
+    public ArrayList<Task> findTask(String name) {
+        ArrayList<Task> resultList = new ArrayList<>();
+        for (Task task : listOfTasks) {
+            if (task.name.contains(name.trim())) {
+                resultList.add(task);
+            }
+        }
+        return resultList;
     }
 
 }
