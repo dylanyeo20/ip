@@ -16,11 +16,12 @@ import java.util.Scanner;
  * Used for loading and storing data from data file.
  */
 public class Storage {
-    public static final DateTimeFormatter DATE_DATA_FORMATTER =
-            DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
+
+    public static final DateTimeFormatter DATE_DATA_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
 
     private final String filePath;
     private File file;
+
 
     /**
      * Create instance of Storage class.
@@ -29,7 +30,7 @@ public class Storage {
      * @param FilePath File path of data file.
      * @throws IOException Throws
      */
-    public Storage(String FilePath) throws IOException{
+    public Storage(String FilePath) throws IOException {
         this.filePath = FilePath;
         this.file = new File(filePath);
 
@@ -46,40 +47,41 @@ public class Storage {
      * @return ArrayList of tasks current in data file
      * @throws Exception If data file not found or if data is corrupted
      */
-    public ArrayList<Task> loadTasks() throws Exception{
+    public ArrayList<Task> loadTasks() throws Exception {
         //Tries to create dylan.txt file if do not exit
-            ArrayList<Task> listOfTasks = new ArrayList<>();
-            Scanner sc = new Scanner(file);
-            while(sc.hasNext()) {
-                String[] inputTask = sc.nextLine().split(" \\| ");
+        ArrayList<Task> listOfTasks = new ArrayList<>();
+        Scanner sc = new Scanner(file);
+        while (sc.hasNext()) {
+            String[] inputTask = sc.nextLine().split(" \\| ");
 
-                //Checks if data input from dylan.txt is valid
-                checkDataFileInput(inputTask);
+            //Checks if data input from dylan.txt is valid
+            checkDataFileInput(inputTask);
 
-                String taskType = inputTask[0], taskName = inputTask[2];
-                boolean isTaskDone = Integer.parseInt(inputTask[1]) == 1;
+            String taskType = inputTask[0], taskName = inputTask[2];
+            boolean isTaskDone = Integer.parseInt(inputTask[1]) == 1;
 
-                switch (taskType) {
-                    case "T":
-                        Task taskTodo = new ToDos(taskName, isTaskDone);
-                        listOfTasks.add(taskTodo);
-                        break;
-                    case "D":
-                        LocalDateTime by = LocalDateTime.parse(inputTask[3], DATE_DATA_FORMATTER);
-                        Task taskDeadline = new Deadlines(taskName, by, isTaskDone);
-                        listOfTasks.add(taskDeadline);
-                        break;
-                    case "E":
-                        LocalDateTime from = LocalDateTime.parse(inputTask[3], DATE_DATA_FORMATTER), to = LocalDateTime.parse(inputTask[4], DATE_DATA_FORMATTER);
-                        Task taskEvent = new Event(taskName, from, to, isTaskDone);
-                        listOfTasks.add(taskEvent);
-                        break;
-                    default:
-                        throw new DukeException("dylan.txt data file is corrupted");
-                }
-
+            switch (taskType) {
+            case "T":
+                Task taskTodo = new ToDos(taskName, isTaskDone);
+                listOfTasks.add(taskTodo);
+                break;
+            case "D":
+                LocalDateTime by = LocalDateTime.parse(inputTask[3], DATE_DATA_FORMATTER);
+                Task taskDeadline = new Deadlines(taskName, by, isTaskDone);
+                listOfTasks.add(taskDeadline);
+                break;
+            case "E":
+                LocalDateTime from = LocalDateTime.parse(inputTask[3], DATE_DATA_FORMATTER), to =
+                        LocalDateTime.parse(inputTask[4], DATE_DATA_FORMATTER);
+                Task taskEvent = new Event(taskName, from, to, isTaskDone);
+                listOfTasks.add(taskEvent);
+                break;
+            default:
+                throw new DukeException("dylan.txt data file is corrupted");
             }
-            return listOfTasks;
+
+        }
+        return listOfTasks;
     }
 
 
@@ -89,8 +91,8 @@ public class Storage {
      * @param input Data from the data file
      * @throws DukeException If data is corrupted
      */
-    public void checkDataFileInput(String[] input) throws DukeException{
-        if (input.length < 3 || input.length > 5 ) {
+    public void checkDataFileInput(String[] input) throws DukeException {
+        if (input.length < 3 || input.length > 5) {
             throw new DukeException("dylan.txt data file is corrupted: Length less than 3 or more than 4");
         }
 
@@ -109,7 +111,7 @@ public class Storage {
         }
 
         if (taskType.equals("T")) {
-            if (input.length != 3 ) {
+            if (input.length != 3) {
                 throw new DukeException("dylan.txt data file is corrupted: Wrong number of inputs for Deadline task");
             }
         }
@@ -159,7 +161,7 @@ public class Storage {
         ArrayList<Task> listOfTasks = taskList.get();
         try {
             List<String> listOfString = new ArrayList<>();
-            for(Task task : listOfTasks) {
+            for (Task task : listOfTasks) {
                 listOfString.add(task.dataInputString());
             }
 

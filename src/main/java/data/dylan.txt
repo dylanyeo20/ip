@@ -2,3 +2,6 @@ T | 1 | read book
 D | 0 | return book | 06/06/2012 0800
 E | 0 | project meeting | 06/12/2012 0800 | 06/12/2012 1800
 T | 1 | join sports club
+T | 0 |  jump
+T | 0 |  hop
+D | 0 | ride | 21/12/2002 0800
