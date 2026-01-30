@@ -32,7 +32,8 @@ application {
 }
 
 shadowJar {
-    archiveBaseName = "Duke"
+    archiveBaseName = "Dylan ChatBot"
+    archiveVersion = "V0.1"
     archiveClassifier = null
 }
 
