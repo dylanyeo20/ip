@@ -1,7 +1,5 @@
 package Duke;
 
-import com.sun.source.util.TaskListener;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,26 +11,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Represents the data file.
+ * Used for loading and storing data from data file.
+ */
 public class Storage {
-    private ArrayList<Task> listOfTasks;
-    private final String FILEPATH;
     public static final DateTimeFormatter DATE_DATA_FORMATTER =
             DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
 
+    private final String filePath;
     private File file;
-    public Storage(String FilePath) throws IOException{
-        this.FILEPATH = FilePath;
-        this.file = new File(FILEPATH);
 
-        //Tries to create dylan.txt file if do not exit
+    /**
+     * Create instance of Storage class.
+     * Creates a new directory and data file if data file not found.
+     *
+     * @param FilePath File path of data file.
+     * @throws IOException Throws
+     */
+    public Storage(String FilePath) throws IOException{
+        this.filePath = FilePath;
+        this.file = new File(filePath);
+
+        //Tries to create dylan.txt file if it does not exist
         file.getParentFile().mkdirs();
         file.createNewFile();
 
     }
 
-    //Initialize listOfThingsToDo Array using dylan.txt
-    //Creates directory if do not exist
-    //Create dylan.txt if does not exist
+
+    /**
+     * Loads existing tasks from data file
+     *
+     * @return ArrayList of tasks current in data file
+     * @throws Exception If data file not found or if data is corrupted
+     */
     public ArrayList<Task> loadTasks() throws Exception{
         //Tries to create dylan.txt file if do not exit
             ArrayList<Task> listOfTasks = new ArrayList<>();
@@ -69,7 +82,13 @@ public class Storage {
             return listOfTasks;
     }
 
-    //Checks if data from dylan.txt is valid
+
+    /**
+     * Checks if data in the data file is valid (not corrupted)
+     *
+     * @param input Data from the data file
+     * @throws DukeException If data is corrupted
+     */
     public void checkDataFileInput(String[] input) throws DukeException{
         if (input.length < 3 || input.length > 5 ) {
             throw new DukeException("dylan.txt data file is corrupted: Length less than 3 or more than 4");
@@ -131,6 +150,11 @@ public class Storage {
         }
     }
 
+    /**
+     * Stores all tasks from task list into the data file.
+     *
+     * @param taskList List of all tasks
+     */
     public void updateDataFile(TaskList taskList) {
         ArrayList<Task> listOfTasks = taskList.get();
         try {
@@ -139,7 +163,7 @@ public class Storage {
                 listOfString.add(task.dataInputString());
             }
 
-            Files.write(Paths.get(FILEPATH), listOfString);
+            Files.write(Paths.get(filePath), listOfString);
 
         } catch (IOException e) {
             System.out.println(e.getMessage());

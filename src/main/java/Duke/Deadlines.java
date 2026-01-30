@@ -1,9 +1,19 @@
 package Duke;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+/**
+ * Represents a Deadline Task that has a name and due date
+ */
 public class Deadlines extends Task{
-    LocalDateTime by;
+    private LocalDateTime by;
+
+    /**
+     * Creates a deadline task with a name and due data.
+     * Used to create new tasks from user inputs.
+     * @param name Description of Task
+     * @param by Due Date
+     */
     public Deadlines(String name, LocalDateTime by) {
         super(name, 'D');
         this.by = by;
@@ -11,6 +21,13 @@ public class Deadlines extends Task{
         System.out.println(output);
     }
 
+    /**
+     * Creates a deadline task loaded from data file.
+     *
+     * @param name Description of Task
+     * @param by Due Date
+     * @param isTaskDone Task completion status
+     */
     public Deadlines(String name, LocalDateTime by, boolean isTaskDone) {
         super(name, 'D', isTaskDone);
         this.by = by;

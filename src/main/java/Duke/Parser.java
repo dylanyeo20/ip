@@ -4,10 +4,21 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+/**
+ * Parses the commands, Checks validity of command and execute them by calling the respective APIs
+ */
 public class Parser {
     public static final DateTimeFormatter DATE_DATA_FORMATTER =
             DateTimeFormatter.ofPattern("dd/MM/yyyy HHmm");
 
+    /**
+     * Checks validity of command and execute them using respective APIs.
+     *
+     * @param command User input from UI
+     * @param storage Data file
+     * @param taskList List of all tasks
+     * @throws Exception If command is invalid
+     */
     public static void doCommand(String command, Storage storage, TaskList taskList) throws Exception {
         Scanner sc = new Scanner(command);
         String input = sc.next();
