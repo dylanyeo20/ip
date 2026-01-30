@@ -1,3 +1,4 @@
+package Duke;
 public class Dylan {
     private static final String FILEPATH = "./src/main/java/data/dylan.txt";
 
