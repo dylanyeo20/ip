@@ -72,10 +72,13 @@ public class TaskList {
         storage.updateDataFile(this);
     }
 
-    public ArrayList<Task> findTask(String name) {
+    /**
+     * Returns a list of tasks containing searched name
+     */
+    public ArrayList<Task> findTask(String searchedName) {
         ArrayList<Task> resultList = new ArrayList<>();
         for (Task task : listOfTasks) {
-            if (task.name.contains(name.trim())) {
+            if (task.name.contains(searchedName.trim())) {
                 resultList.add(task);
             }
         }
