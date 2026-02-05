@@ -1,5 +1,8 @@
-package duke;
+package task;
 
+import duke.Storage;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -22,12 +25,10 @@ public class TaskList {
      * @param storage Data file
      * @param index   Index of task to be removed
      */
-    public void deleteTask(Storage storage, int index) {
-        String taskStatus = listOfTasks.get(index).getStatus();
+    public Task deleteTask(Storage storage, int index) throws IOException {
+        Task task = listOfTasks.get(index);
         listOfTasks.remove(index);
         Task.reduceTask();
-        System.out.println("Noted. I've removed this task: \n" + taskStatus);
-        System.out.println("Now you have " + Task.totalTask() + " tasks in the list.");
 
         //Update index fields in each of the tasks
         for (int i = index; i < listOfTasks.size(); i++) {
@@ -36,6 +37,7 @@ public class TaskList {
         }
 
         storage.updateDataFile(this);
+        return task;
     }
 
     /**
@@ -44,7 +46,7 @@ public class TaskList {
      * @param storage Data file
      * @param task    New task to be added
      */
-    public void addTask(Storage storage, Task task) {
+    public void addTask(Storage storage, Task task) throws IOException {
         this.listOfTasks.add(task);
         storage.updateDataFile(this);
     }
@@ -55,9 +57,11 @@ public class TaskList {
      * @param storage Data file
      * @param index   Index of task to be mark as done
      */
-    public void markAsDone(Storage storage, int index) {
-        listOfTasks.get(index).markAsDone();
+    public Task markAsDone(Storage storage, int index) throws IOException {
+        Task task = listOfTasks.get(index);
+        task.markAsDone();
         storage.updateDataFile(this);
+        return task;
     }
 
 
@@ -67,15 +71,17 @@ public class TaskList {
      * @param storage Data file
      * @param index   Index of task to be mark as not done
      */
-    public void unmarkAsDone(Storage storage, int index) {
-        listOfTasks.get(index).unmarkAsDone();
+    public Task unmarkAsDone(Storage storage, int index) throws IOException {
+        Task task = listOfTasks.get(index);
+        task.unmarkAsDone();
         storage.updateDataFile(this);
+        return task;
     }
 
     /**
      * Returns a list of tasks containing searched name
      */
-    public ArrayList<Task> findTask(String searchedName) {
+    public ArrayList<Task> findTask(String searchedName) throws IOException {
         ArrayList<Task> resultList = new ArrayList<>();
         for (Task task : listOfTasks) {
             if (task.name.contains(searchedName.trim())) {

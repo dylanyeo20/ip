@@ -1,4 +1,4 @@
-package duke;
+package exception;
 
 /**
  * Custom exceptions for application
