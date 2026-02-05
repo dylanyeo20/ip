@@ -13,13 +13,18 @@ public class Dylan {
     /**
      * Constructs a Dylan chatbot instance and initializes UI, storage, and task list.
      *
-     * @param filePath Path to the data file used for loading and saving tasks.
      * @throws Exception if Storage or TaskList fails to initialize
      */
-    public Dylan(String filePath) throws Exception {
-        this.ui = new UI();
-        this.storage = new Storage(filePath);
-        listOfThingsToDo = new TaskList(storage.loadTasks());
+    public Dylan() {
+        try {
+            this.ui = new UI();
+            this.storage = new Storage(FILEPATH);
+            listOfThingsToDo = new TaskList(storage.loadTasks());
+        } catch (Exception e) {
+            System.out.println("Exiting: " + e.getMessage());
+            System.exit(0);
+        }
+
     }
 
     private void run() {
@@ -28,11 +33,16 @@ public class Dylan {
     }
 
     public static void main(String[] args) {
-        try {
+        System.out.println("Hello!");
+        /*try {
             new Dylan(FILEPATH).run();
         } catch (Exception e) {
             System.out.println("Exiting: " + e.getMessage());
             System.exit(0);
-        }
+        }*/
+    }
+
+    public String getResponse(String input) {
+        return "Duke heard: " + input;
     }
 }

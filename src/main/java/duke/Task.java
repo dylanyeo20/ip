@@ -68,6 +68,7 @@ public class Task {
      */
     public void printTask() {
         String output = String.format("%d. %s", this.idx, getStatus());
+        //return output
         System.out.println(output);
     }
 

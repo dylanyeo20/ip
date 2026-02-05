@@ -1,9 +1,9 @@
 package duke;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 
 public class ParserTest {
 
@@ -12,9 +12,10 @@ public class ParserTest {
         try {
             Storage fakeStorage = new FakeStorage();
             TaskList fakeTaskList = new TaskList(fakeStorage.loadTasks());
+            UI ui = new UI();
 
             DukeException ex =
-                    assertThrows(DukeException.class, () -> Parser.doCommand("todo", fakeStorage, fakeTaskList));
+                    assertThrows(DukeException.class, () -> Parser.doCommand("todo", fakeStorage, fakeTaskList, ui));
 
             assertTrue(ex.getMessage().contains(" Please give description of task"));
         } catch (Exception e) {
