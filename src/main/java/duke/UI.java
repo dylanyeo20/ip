@@ -1,7 +1,5 @@
-package Duke;
+package duke;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -20,11 +18,15 @@ public class UI {
         sc = new Scanner(System.in);
     }
 
+    /**
+     * Prints welcome message
+     */
     public void printWelcomeMessage() {
         String chatbot = "Dylan";
-        System.out.println(String.format("____________________________________________________________\n" + " Hello! "
-                + "I'm %s\n" + " What can I do for you?\n" +
-                "____________________________________________________________\n", chatbot));
+        System.out.println(String.format(
+                "____________________________________________________________\n" + " Hello! " + "I'm %s\n"
+                        + " What can I do for you?\n"
+                        + "____________________________________________________________\n", chatbot));
     }
 
     public String get() {

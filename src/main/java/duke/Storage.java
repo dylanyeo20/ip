@@ -1,4 +1,4 @@
-package Duke;
+package duke;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,11 +27,11 @@ public class Storage {
      * Create instance of Storage class.
      * Creates a new directory and data file if data file not found.
      *
-     * @param FilePath File path of data file.
+     * @param filePath File path of data file.
      * @throws IOException Throws
      */
-    public Storage(String FilePath) throws IOException {
-        this.filePath = FilePath;
+    public Storage(String filePath) throws IOException {
+        this.filePath = filePath;
         this.file = new File(filePath);
 
         //Tries to create dylan.txt file if it does not exist
@@ -48,7 +48,7 @@ public class Storage {
      * @throws Exception If data file not found or if data is corrupted
      */
     public ArrayList<Task> loadTasks() throws Exception {
-        //Tries to create dylan.txt file if do not exit
+        //Tries to create dylan.txt file if it does not exit
         ArrayList<Task> listOfTasks = new ArrayList<>();
         Scanner sc = new Scanner(file);
         while (sc.hasNext()) {
@@ -57,7 +57,8 @@ public class Storage {
             //Checks if data input from dylan.txt is valid
             checkDataFileInput(inputTask);
 
-            String taskType = inputTask[0], taskName = inputTask[2];
+            String taskType = inputTask[0];
+            String taskName = inputTask[2];
             boolean isTaskDone = Integer.parseInt(inputTask[1]) == 1;
 
             switch (taskType) {
@@ -71,8 +72,8 @@ public class Storage {
                 listOfTasks.add(taskDeadline);
                 break;
             case "E":
-                LocalDateTime from = LocalDateTime.parse(inputTask[3], DATE_DATA_FORMATTER), to =
-                        LocalDateTime.parse(inputTask[4], DATE_DATA_FORMATTER);
+                LocalDateTime from = LocalDateTime.parse(inputTask[3], DATE_DATA_FORMATTER);
+                LocalDateTime to = LocalDateTime.parse(inputTask[4], DATE_DATA_FORMATTER);
                 Task taskEvent = new Event(taskName, from, to, isTaskDone);
                 listOfTasks.add(taskEvent);
                 break;
@@ -96,7 +97,9 @@ public class Storage {
             throw new DukeException("dylan.txt data file is corrupted: Length less than 3 or more than 4");
         }
 
-        String taskType = input[0], markAsDone = input[1], taskName = input[2];
+        String taskType = input[0];
+        String markAsDone = input[1];
+        String taskName = input[2];
 
         if (!markAsDone.equals("1") && !markAsDone.equals("0")) {
             throw new DukeException("dylan.txt data file is corrupted: markAsDone is invalid");
@@ -138,7 +141,8 @@ public class Storage {
                 throw new DukeException("dylan.txt data file is corrupted: Wrong number of inputs for Deadline task");
             }
 
-            String from = input[3], to = input[4];
+            String from = input[3];
+            String to = input[4];
             if (from.isBlank() || to.isBlank()) {
                 throw new DukeException("dylan.txt data file is corrupted: Missing From or To  for Event task");
             }

@@ -1,4 +1,4 @@
-package Duke;
+package duke;
 
 import java.time.LocalDateTime;
 
@@ -6,7 +6,8 @@ import java.time.LocalDateTime;
  * Represents an Event task that has a start and end date/time
  */
 public class Event extends Task {
-    private final LocalDateTime from, to;
+    private final LocalDateTime from;
+    private final LocalDateTime to;
 
     /**
      * Creates a new Event task from user input.
@@ -42,16 +43,16 @@ public class Event extends Task {
 
     @Override
     public String getStatus() {
-        String output =
-                String.format("%s (from: %s to: %s)", super.getStatus(), from.format(DATE_DISPLAY_FORMAT),
-                        to.format(DATE_DISPLAY_FORMAT));
+        String output = String.format("%s (from: %s to: %s)", super.getStatus(), from.format(DATE_DISPLAY_FORMAT),
+                to.format(DATE_DISPLAY_FORMAT));
         return output;
     }
 
     @Override
     public String dataInputString() {
         int isDone = (super.isDone ? 1 : 0);
-        return type + " | " + isDone + " | " + name + " | " + from.format(DATE_DATA_FORMAT) + " | " + to.format(DATE_DATA_FORMAT);
+        return type + " | " + isDone + " | " + name + " | " + from.format(DATE_DATA_FORMAT) + " | " + to.format(
+                DATE_DATA_FORMAT);
     }
 
 

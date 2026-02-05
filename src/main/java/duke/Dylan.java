@@ -1,6 +1,4 @@
-package Duke;
-
-import java.io.IOException;
+package duke;
 
 /**
  * Main class of Chatbot
@@ -14,6 +12,7 @@ public class Dylan {
 
     /**
      * Constructs a Dylan chatbot instance and initializes UI, storage, and task list.
+     *
      * @param filePath Path to the data file used for loading and saving tasks.
      * @throws Exception if Storage or TaskList fails to initialize
      */

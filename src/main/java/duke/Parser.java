@@ -1,4 +1,4 @@
-package Duke;
+package duke;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -81,7 +81,8 @@ public class Parser {
                 throw new DukeException("Invalid command! <Description> /by <Deadline>");
             }
 
-            String nameq = nameAndBy[0].trim(), by = nameAndBy[1].trim();
+            String nameq = nameAndBy[0].trim();
+            String by = nameAndBy[1].trim();
             if (nameq.isBlank() || by.isBlank()) {
                 throw new DukeException("Name and By cannot be empty!");
             }
@@ -93,22 +94,24 @@ public class Parser {
             if (!sc.hasNext()) {
                 throw new DukeException(" Please give description, from, to of task");
             }
-            String[] nameAndFromAndTo = sc.nextLine().split(" /from ");
-            if (nameAndFromAndTo.length != 2) {
+            String[] nameAndfromAndTo = sc.nextLine().split(" /from ");
+            if (nameAndfromAndTo.length != 2) {
                 throw new DukeException("Invalid syntax! <Description> /from <from> /to <to>");
             }
-            String[] FromAndTo = nameAndFromAndTo[1].split(" /to ");
-            if (FromAndTo.length != 2) {
+            String[] fromAndTo = nameAndfromAndTo[1].split(" /to ");
+            if (fromAndTo.length != 2) {
                 throw new DukeException("Invalid syntax! <Description> /from <from> /to <to>");
             }
 
-            String name1 = nameAndFromAndTo[0], from = FromAndTo[0], to = FromAndTo[1];
+            String name1 = nameAndfromAndTo[0];
+            String from = fromAndTo[0];
+            String to = fromAndTo[1];
             if (name1.isBlank() || from.isBlank() || to.isBlank()) {
                 throw new DukeException("Name, From, and To cannot be empty!");
             }
 
-            LocalDateTime fromDateTime = LocalDateTime.parse(from, DATE_DATA_FORMATTER), toDateTime =
-                    LocalDateTime.parse(to, DATE_DATA_FORMATTER);
+            LocalDateTime fromDateTime = LocalDateTime.parse(from, DATE_DATA_FORMATTER);
+            LocalDateTime toDateTime = LocalDateTime.parse(to, DATE_DATA_FORMATTER);
             taskList.addTask(storage, new Event(name1, fromDateTime, toDateTime));
             break;
         case "find":
