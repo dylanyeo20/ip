@@ -1,12 +1,9 @@
 package duke;
 
-import exception.DukeException;
-import task.Task;
-import task.TaskList;
-
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import task.Task;
 
 /**
  * Represent user interface of chatbot.
@@ -97,62 +94,4 @@ public class UI {
     public String printByeMessage() {
         return "Bye. Hope to see you again soon!";
     }
-
-    /**
-     * Print list of things to do (list command)
-     *
-     * @param listOfThingsToDo List of tasks to do.
-     */
-    public void print(ArrayList<Task> listOfThingsToDo) {
-        System.out.println("Here are the tasks in your list:");
-        for (Task t : listOfThingsToDo) {
-            t.printTask();
-        }
-    }
-
-
-    /**
-     * Runs the main loop of the chatbot.
-     * <p>
-     * Reads the input, and calls execute command in Parser
-     *
-     * @param storage
-     * @param taskList
-     */
-    public void run(Storage storage, TaskList taskList) {
-        String input;
-
-        while (sc.hasNext()) {
-            input = sc.nextLine();
-
-            if (input.equals("bye")) {
-                break;
-            }
-
-            System.out.println(LINE);
-
-            if (input.equals("list")) {
-                print(taskList.get());
-                System.out.println(LINE);
-                continue;
-            }
-
-            try {
-                Parser.parse(input);
-            } catch (DukeException e) {
-                System.out.println("Error: " + e.getMessage());
-                continue;
-            } catch (DateTimeParseException e) {
-                System.out.println("Error: " + e.getMessage());
-                System.out.println("Please input Date & Time in: dd/mm/yyyy HHMM");
-            } catch (Exception e) {
-                System.out.println("Unexpected error: " + e.getMessage());
-            } finally {
-                System.out.println(LINE);
-            }
-        }
-
-        System.out.println(LINE + "\n Bye. Hope to see you again soon!\n" + LINE);
-    }
-
 }

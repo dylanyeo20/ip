@@ -12,7 +12,7 @@ public class Dylan {
     private UI ui;
     private Storage storage;
     private TaskList tasks;
-    private String commandType;
+    private String commandType = "";
 
     /**
      * Constructs a Dylan chatbot instance and initializes UI, storage, and task list.
@@ -64,7 +64,6 @@ public class Dylan {
             System.exit(0);
             return " ";
         }
-
         try {
             Command c = Parser.parse(input);
             c.execute(tasks, ui, storage);
