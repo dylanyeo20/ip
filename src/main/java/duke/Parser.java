@@ -2,7 +2,19 @@ package duke;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+
+import command.AddCommand;
+import command.Command;
+import command.DeleteCommand;
+import command.FindCommand;
+import command.ListCommand;
+import command.MarkAsDoneCommand;
+import command.UnmarkAsDoneCommand;
+import exception.DukeException;
+import task.Task;
+
 
 /**
  * Parses the commands, Checks validity of command and execute them by calling the respective APIs
@@ -13,12 +25,10 @@ public class Parser {
     /**
      * Checks validity of command and execute them using respective APIs.
      *
-     * @param command  User input from UI
-     * @param storage  Data file
-     * @param taskList List of all tasks
+     * @param command User input from UI
      * @throws Exception If command is invalid
      */
-    public static void doCommand(String command, Storage storage, TaskList taskList, UI ui) throws Exception {
+    public static Command parse(String command) throws Exception {
         Scanner sc = new Scanner(command);
         String input = sc.next();
 
@@ -27,16 +37,18 @@ public class Parser {
         }
 
         switch (input) {
+        case "list":
+            Command c = new ListCommand();
+            return c;
         case "mark":
             if (!sc.hasNextInt()) {
-                throw new DukeException(" Please give an index of task to Mark!");
+                throw new DukeException("Please give an index of task to Mark!");
             }
             int index = sc.nextInt() - 1;
             if (index < 0 || index >= Task.totalTask()) {
                 throw new DukeException((index + 1) + " is a invalid index!");
             }
-            taskList.markAsDone(storage, index);
-            break;
+            return new MarkAsDoneCommand(index);
 
         case "unmark":
             if (!sc.hasNextInt()) {
@@ -46,8 +58,7 @@ public class Parser {
             if (index1 < 0 || index1 >= Task.totalTask()) {
                 throw new DukeException((index1 + 1) + " is a invalid index!");
             }
-            taskList.unmarkAsDone(storage, index1);
-            break;
+            return new UnmarkAsDoneCommand(index1);
 
         case "delete":
             if (!sc.hasNextInt()) {
@@ -57,8 +68,7 @@ public class Parser {
             if (index2 < 0 || index2 >= Task.totalTask()) {
                 throw new DukeException((index2 + 1) + " is a invalid index!");
             }
-            taskList.deleteTask(storage, index2);
-            break;
+            return new DeleteCommand(index2);
 
         case "todo":
             if (!sc.hasNext()) {
@@ -68,8 +78,7 @@ public class Parser {
             if (name.isBlank()) {
                 throw new DukeException("Invalid command! Missing Task name");
             }
-            taskList.addTask(storage, new ToDos(name));
-            break;
+            return new AddCommand(name);
 
         case "deadline":
             if (!sc.hasNext()) {
@@ -81,15 +90,17 @@ public class Parser {
                 throw new DukeException("Invalid command! <Description> /by <Deadline>");
             }
 
-            String nameq = nameAndBy[0].trim();
+            String deadlineName = nameAndBy[0].trim();
             String by = nameAndBy[1].trim();
-            if (nameq.isBlank() || by.isBlank()) {
-                throw new DukeException("Name and By cannot be empty!");
+            if (deadlineName.isBlank() || by.isBlank()) {
+                throw new DukeException("Invalid command! Name and By cannot be empty!");
             }
-
-            LocalDateTime dateTime = LocalDateTime.parse(by, DATE_DATA_FORMATTER);
-            taskList.addTask(storage, new Deadlines(nameq, dateTime));
-            break;
+            try {
+                LocalDateTime dateTime = LocalDateTime.parse(by, DATE_DATA_FORMATTER);
+                return new AddCommand(deadlineName, dateTime);
+            } catch (DateTimeParseException e) {
+                throw new DukeException("Invalid syntax! Please input Date & Time in: dd/mm/yyyy HHMM");
+            }
         case "event":
             if (!sc.hasNext()) {
                 throw new DukeException(" Please give description, from, to of task");
@@ -103,21 +114,23 @@ public class Parser {
                 throw new DukeException("Invalid syntax! <Description> /from <from> /to <to>");
             }
 
-            String name1 = nameAndfromAndTo[0];
+            String eventName = nameAndfromAndTo[0];
             String from = fromAndTo[0];
             String to = fromAndTo[1];
-            if (name1.isBlank() || from.isBlank() || to.isBlank()) {
+            if (eventName.isBlank() || from.isBlank() || to.isBlank()) {
                 throw new DukeException("Name, From, and To cannot be empty!");
             }
 
-            LocalDateTime fromDateTime = LocalDateTime.parse(from, DATE_DATA_FORMATTER);
-            LocalDateTime toDateTime = LocalDateTime.parse(to, DATE_DATA_FORMATTER);
-            taskList.addTask(storage, new Event(name1, fromDateTime, toDateTime));
-            break;
+            try {
+                LocalDateTime fromDateTime = LocalDateTime.parse(from, DATE_DATA_FORMATTER);
+                LocalDateTime toDateTime = LocalDateTime.parse(to, DATE_DATA_FORMATTER);
+                return new AddCommand(eventName, fromDateTime, toDateTime);
+            } catch (DateTimeParseException e) {
+                throw new DukeException("Invalid syntax! Please input Date & Time in: dd/mm/yyyy HHMM");
+            }
         case "find":
             String findName = sc.nextLine();
-            ui.print(taskList.findTask(findName));
-            break;
+            return new FindCommand(findName);
 
         default:
             throw new DukeException(" " + input + " is a invalid command!");

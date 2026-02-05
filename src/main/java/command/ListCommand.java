@@ -1,10 +1,7 @@
 package command;
 
-import java.util.ArrayList;
-
 import duke.Storage;
-import duke.Task;
-import duke.TaskList;
+import task.TaskList;
 import duke.UI;
 
 
@@ -12,6 +9,8 @@ import duke.UI;
  * Class for List commands
  */
 public class ListCommand extends Command {
+    private String response;
+
     /**
      * Executes list tasks
      *
@@ -20,8 +19,7 @@ public class ListCommand extends Command {
      * @param storage
      */
     public void execute(TaskList taskList, UI ui, Storage storage) {
-        ArrayList<Task> tasks = taskList.get();
-
+        response = ui.printTasks(taskList.get());
     }
 
     /**
@@ -30,6 +28,6 @@ public class ListCommand extends Command {
      * @return
      */
     public String getString() {
-        return "";
+        return response;
     }
 }

@@ -1,4 +1,4 @@
-package duke;
+package task;
 
 import java.time.format.DateTimeFormatter;
 
@@ -49,8 +49,6 @@ public class Task {
      */
     public void markAsDone() {
         this.isDone = true;
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println(this.getStatus());
     }
 
     /**
@@ -58,18 +56,15 @@ public class Task {
      */
     public void unmarkAsDone() {
         this.isDone = false;
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println(getStatus());
-
     }
 
     /**
      * Prints tasks
      */
-    public void printTask() {
-        String output = String.format("%d. %s", this.idx, getStatus());
-        //return output
-        System.out.println(output);
+    public String printTask() {
+        String output = String.format("%d. %s\n", this.idx, getStatus());
+        return output;
+        //System.out.println(output);
     }
 
     public static int totalTask() {

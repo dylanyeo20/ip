@@ -1,5 +1,9 @@
 package duke;
 
+import exception.DukeException;
+import task.Task;
+import task.TaskList;
+
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -21,17 +25,77 @@ public class UI {
     /**
      * Prints welcome message
      */
-    public void printWelcomeMessage() {
+    public String printWelcomeMessage() {
         String chatbot = "Dylan";
-        System.out.println(String.format(
-                "____________________________________________________________\n" + " Hello! " + "I'm %s\n"
-                        + " What can I do for you?\n"
-                        + "____________________________________________________________\n", chatbot));
+        return String.format(" Hello! " + "I'm %s\n" + " What can I do for you?\n", chatbot);
     }
 
     public String get() {
         String instr = sc.nextLine();
         return instr;
+    }
+
+    /**
+     * Returns string of list of things to do
+     *
+     * @param tasks
+     * @return
+     */
+    public String printTasks(ArrayList<Task> tasks) {
+        StringBuilder response = new StringBuilder("Here are the tasks in your list: \n");
+        for (Task task : tasks) {
+            response.append(task.printTask()).append("\n");
+        }
+        return response.toString();
+    }
+
+    /**
+     * Return response of marking task as done
+     *
+     * @param task Task that has been mark as done
+     * @return Response
+     */
+    public String printMarkAsDone(Task task) {
+        return "Nice! I've marked this task as done:\n" + task.getStatus();
+    }
+
+    /**
+     * Return response of marking task as undone
+     *
+     * @param task Task that has been mark as done
+     * @return Response
+     */
+    public String printUnmarkAsDone(Task task) {
+        return "OK, I've marked this task as not done yet:\n" + task.getStatus();
+    }
+
+    /**
+     * Returns response of adding task
+     *
+     * @param task Task that was added
+     * @return Response
+     */
+    public String printAddTask(Task task) {
+        return String.format("Got it. I've added this task:\n %s\nNow you have %d tasks in the list", task.getStatus(),
+                Task.totalTask());
+    }
+
+    /**
+     * Returns response of deleting task
+     *
+     * @param task Task that was deleted
+     * @return Response
+     */
+    public String printDeleteTask(Task task) {
+        return "Noted. I've removed this task: \n" + task.getStatus() + "\nNow you have " + Task.totalTask()
+                + " tasks in the list.";
+    }
+
+    /**
+     * Returns bye message
+     */
+    public String printByeMessage() {
+        return "Bye. Hope to see you again soon!";
     }
 
     /**
@@ -45,6 +109,7 @@ public class UI {
             t.printTask();
         }
     }
+
 
     /**
      * Runs the main loop of the chatbot.
@@ -73,7 +138,7 @@ public class UI {
             }
 
             try {
-                Parser.doCommand(input, storage, taskList, this);
+                Parser.parse(input);
             } catch (DukeException e) {
                 System.out.println("Error: " + e.getMessage());
                 continue;

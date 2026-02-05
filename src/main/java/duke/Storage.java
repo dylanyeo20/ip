@@ -1,5 +1,8 @@
 package duke;
 
+import exception.DukeException;
+import task.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -161,20 +164,15 @@ public class Storage {
      *
      * @param taskList List of all tasks
      */
-    public void updateDataFile(TaskList taskList) {
+    public void updateDataFile(TaskList taskList) throws IOException {
         ArrayList<Task> listOfTasks = taskList.get();
-        try {
-            List<String> listOfString = new ArrayList<>();
-            for (Task task : listOfTasks) {
-                listOfString.add(task.dataInputString());
-            }
 
-            Files.write(Paths.get(filePath), listOfString);
-
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            System.out.println("IOException: Failed to update data file");
+        List<String> listOfString = new ArrayList<>();
+        for (Task task : listOfTasks) {
+            listOfString.add(task.dataInputString());
         }
+
+        Files.write(Paths.get(filePath), listOfString);
     }
 
 

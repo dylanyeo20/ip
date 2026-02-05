@@ -36,6 +36,8 @@ public class MainWindow extends AnchorPane {
      */
     public void setDylan(Dylan d) {
         dylan = d;
+        dialogContainer.getChildren().addAll(DialogBox.getDukeDialog(d.getWelcomeMessage(), dukeImage, ""));
+
     }
 
     /**
@@ -46,8 +48,9 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         String input = userInput.getText();
         String response = dylan.getResponse(input);
-        dialogContainer.getChildren()
-                .addAll(DialogBox.getUserDialog(input, userImage), DialogBox.getDukeDialog(response, dukeImage));
+        String commandType = dylan.getCommandType();
+        dialogContainer.getChildren().addAll(DialogBox.getUserDialog(input, userImage),
+                DialogBox.getDukeDialog(response, dukeImage, commandType));
         userInput.clear();
     }
 }
