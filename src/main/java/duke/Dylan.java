@@ -60,6 +60,11 @@ public class Dylan {
     }
 
     public String getResponse(String input) {
+        if (input.equals("bye")) {
+            System.exit(0);
+            return " ";
+        }
+
         try {
             Command c = Parser.parse(input);
             c.execute(tasks, ui, storage);
