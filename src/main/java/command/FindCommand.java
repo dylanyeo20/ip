@@ -3,9 +3,9 @@ package command;
 import java.util.ArrayList;
 
 import duke.Storage;
+import duke.UI;
 import task.Task;
 import task.TaskList;
-import duke.UI;
 
 
 /**

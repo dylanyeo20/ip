@@ -1,9 +1,10 @@
 package command;
 
 import duke.Storage;
+import duke.UI;
 import task.Task;
 import task.TaskList;
-import duke.UI;
+
 
 /**
  * Executes 'unmark' command

@@ -42,10 +42,6 @@ public class Dylan {
         while (true) {
             try {
                 String input = ui.get();
-                if (input.equals("bye")) {
-                    System.out.println(ui.printByeMessage());
-                    return;
-                }
                 Command command = Parser.parse(input);
                 command.execute(tasks, ui, storage);
                 System.out.println(command.getString());
@@ -67,14 +63,12 @@ public class Dylan {
     }
 
     public String getResponse(String input) {
-        if (input.equals("bye")) {
-            System.exit(0);
-            return " ";
-        }
         try {
             Command c = Parser.parse(input);
+            assert c != null : "Parser returned null in GetResponse";
             c.execute(tasks, ui, storage);
             commandType = c.getClass().getSimpleName();
+            
             return c.getString();
         } catch (Exception e) {
             return "Error: " + e.getMessage();
