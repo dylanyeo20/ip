@@ -19,6 +19,10 @@ public class MarkAsDoneCommand extends Command {
 
     @Override
     public void execute(TaskList tasks, UI ui, Storage storage) throws Exception {
+        assert tasks != null : "TaskList should not be null";
+        assert ui != null : "UI should not be null";
+        assert storage != null : "Storage should not be null";
+
         Task task = tasks.markAsDone(storage, index);
         response = ui.printMarkAsDone(task);
     }

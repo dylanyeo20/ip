@@ -19,7 +19,12 @@ public class ListCommand extends Command {
      * @param storage
      */
     public void execute(TaskList taskList, UI ui, Storage storage) {
+        assert taskList != null : "TaskList should not be null";
+        assert ui != null : "UI should not be null";
+        assert storage != null : "Storage should not be null";
+
         response = ui.printTasks(taskList.get());
+        assert response.startsWith("Here are the tasks in your list:") : "Invalid response format for List command";
     }
 
     /**

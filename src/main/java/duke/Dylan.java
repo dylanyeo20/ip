@@ -1,7 +1,10 @@
 package duke;
 
 import command.Command;
+import task.Task;
 import task.TaskList;
+
+import java.util.ArrayList;
 
 /**
  * Main class of Chatbot
@@ -23,7 +26,11 @@ public class Dylan {
         try {
             this.ui = new UI();
             this.storage = new Storage(FILEPATH);
-            tasks = new TaskList(storage.loadTasks());
+
+            ArrayList<Task> taskList = storage.loadTasks();
+            assert taskList != null : "TaskList is null!";
+            tasks = new TaskList(taskList);
+
         } catch (Exception e) {
             System.out.println("Exiting: " + e.getMessage());
             System.exit(0);
