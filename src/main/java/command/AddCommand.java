@@ -2,13 +2,13 @@ package command;
 
 import java.time.LocalDateTime;
 
+import duke.Storage;
+import duke.UI;
 import task.Deadlines;
 import task.Event;
-import duke.Storage;
 import task.Task;
 import task.TaskList;
 import task.ToDos;
-import duke.UI;
 
 
 /**

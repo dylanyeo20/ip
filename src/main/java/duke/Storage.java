@@ -1,8 +1,5 @@
 package duke;
 
-import exception.DukeException;
-import task.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,6 +10,14 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import exception.DukeException;
+import task.Deadlines;
+import task.Event;
+import task.Task;
+import task.TaskList;
+import task.ToDos;
+
 
 /**
  * Represents the data file.
@@ -56,8 +61,6 @@ public class Storage {
         Scanner sc = new Scanner(file);
         while (sc.hasNext()) {
             String[] inputTask = sc.nextLine().split(" \\| ");
-
-            //Checks if data input from dylan.txt is valid
             checkDataFileInput(inputTask);
 
             String taskType = inputTask[0];
@@ -83,7 +86,6 @@ public class Storage {
             default:
                 throw new DukeException("dylan.txt data file is corrupted");
             }
-
         }
         return listOfTasks;
     }
@@ -97,67 +99,26 @@ public class Storage {
      */
     public void checkDataFileInput(String[] input) throws DukeException {
         if (input.length < 3 || input.length > 5) {
-            throw new DukeException("dylan.txt data file is corrupted: Length less than 3 or more than 4");
+            throw new DukeException("dylan.txt data file is corrupted: Length less than 3 or more than 5");
         }
 
         String taskType = input[0];
         String markAsDone = input[1];
         String taskName = input[2];
 
-        if (!markAsDone.equals("1") && !markAsDone.equals("0")) {
-            throw new DukeException("dylan.txt data file is corrupted: markAsDone is invalid");
-        }
-
-        if (taskName.isBlank()) {
-            throw new DukeException("dylan.txt data file is corrupted: task name is blank");
-        }
-
-        if (!taskType.equals("T") && !taskType.equals("D") && !taskType.equals("E")) {
-            throw new DukeException("dylan.txt data file is corrupted: Invalid task Type");
-        }
+        checkInputs(markAsDone, taskName, taskType);
 
         if (taskType.equals("T")) {
-            if (input.length != 3) {
-                throw new DukeException("dylan.txt data file is corrupted: Wrong number of inputs for Deadline task");
-            }
-        }
-
-        if (taskType.equals("D")) {
-            if (input.length != 4) {
-                throw new DukeException("dylan.txt data file is corrupted: Wrong number of inputs for Deadline task");
-            }
-
-            String by = input[3];
-            if (by.isBlank()) {
-                throw new DukeException("dylan.txt data file is corrupted: Missing deadline for deadline event");
-            }
-
-            try {
-                LocalDateTime.parse(by, DATE_DATA_FORMATTER);
-            } catch (DateTimeParseException e) {
-                System.out.println("dylan.txt data file is corrupted: Invalid Date format");
-            }
-        }
-
-        if (taskType.equals("E")) {
-            if (input.length != 5) {
-                throw new DukeException("dylan.txt data file is corrupted: Wrong number of inputs for Deadline task");
-            }
-
-            String from = input[3];
-            String to = input[4];
-            if (from.isBlank() || to.isBlank()) {
-                throw new DukeException("dylan.txt data file is corrupted: Missing From or To  for Event task");
-            }
-
-            try {
-                LocalDateTime.parse(from, DATE_DATA_FORMATTER);
-                LocalDateTime.parse(to, DATE_DATA_FORMATTER);
-            } catch (DateTimeParseException e) {
-                System.out.println("dylan.txt data file is corrupted: Invalid Date format");
-            }
+            checkTodoData(input);
+        } else if (taskType.equals("D")) {
+            checkDeadlineData(input);
+        } else if (taskType.equals("E")) {
+            checkEventData(input);
+        } else {
+            throw new DukeException("Unknown error: Data file is corrupted");
         }
     }
+
 
     /**
      * Stores all tasks from task list into the data file.
@@ -173,6 +134,88 @@ public class Storage {
         }
 
         Files.write(Paths.get(filePath), listOfString);
+    }
+
+    /**
+     * Checks if the three parameters from data file is valid.
+     *
+     * @param markAsDone
+     * @param taskName
+     * @param taskType
+     * @throws DukeException
+     */
+    public void checkInputs(String markAsDone, String taskName, String taskType) throws DukeException {
+        if (!markAsDone.equals("1") && !markAsDone.equals("0")) {
+            throw new DukeException("dylan.txt data file is corrupted: markAsDone is invalid");
+        }
+
+        if (taskName.isBlank()) {
+            throw new DukeException("dylan.txt data file is corrupted: task name is blank");
+        }
+
+        if (!taskType.equals("T") && !taskType.equals("D") && !taskType.equals("E")) {
+            throw new DukeException("dylan.txt data file is corrupted: Invalid task Type");
+        }
+    }
+
+    /**
+     * Checks if data is valid for Todo Task.
+     *
+     * @param input
+     * @throws DukeException
+     */
+    public void checkTodoData(String[] input) throws DukeException {
+        if (input.length != 3) {
+            throw new DukeException("dylan.txt data file is corrupted: Wrong number of inputs for Todo task");
+        }
+    }
+
+    /**
+     * Checks if data is valid for a Deadline Task
+     *
+     * @param input
+     * @throws DukeException
+     */
+    public void checkDeadlineData(String[] input) throws DukeException {
+        if (input.length != 4) {
+            throw new DukeException("dylan.txt data file is corrupted: Wrong number of inputs for Deadline task");
+        }
+
+        String by = input[3];
+        if (by.isBlank()) {
+            throw new DukeException("dylan.txt data file is corrupted: Missing deadline for deadline event");
+        }
+
+        try {
+            LocalDateTime.parse(by, DATE_DATA_FORMATTER);
+        } catch (DateTimeParseException e) {
+            System.out.println("dylan.txt data file is corrupted: Invalid Date format");
+        }
+    }
+
+    /**
+     * Checks if data is valid for a Event Task
+     *
+     * @param input
+     * @throws DukeException
+     */
+    public void checkEventData(String[] input) throws DukeException {
+        if (input.length != 5) {
+            throw new DukeException("dylan.txt data file is corrupted: Wrong number of inputs for Deadline task");
+        }
+
+        String from = input[3];
+        String to = input[4];
+        if (from.isBlank() || to.isBlank()) {
+            throw new DukeException("dylan.txt data file is corrupted: Missing From or To  for Event task");
+        }
+
+        try {
+            LocalDateTime.parse(from, DATE_DATA_FORMATTER);
+            LocalDateTime.parse(to, DATE_DATA_FORMATTER);
+        } catch (DateTimeParseException e) {
+            System.out.println("dylan.txt data file is corrupted: Invalid Date format");
+        }
     }
 
 

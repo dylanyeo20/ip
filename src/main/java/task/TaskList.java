@@ -1,9 +1,10 @@
 package task;
 
-import duke.Storage;
-
 import java.io.IOException;
 import java.util.ArrayList;
+
+import duke.Storage;
+
 
 /**
  * Represents a TaskList that keeps tracks of all existing tasks.
