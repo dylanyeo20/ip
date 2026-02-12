@@ -87,6 +87,10 @@ public class Task {
         return false;
     }
 
+    public int getIndex() {
+        return this.idx;
+    }
+
     /**
      * Returns the status of the task.
      * <p>

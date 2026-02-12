@@ -25,16 +25,11 @@ public class UI {
     public String printWelcomeMessage(ArrayList<Task> upcoming) {
         String chatbot = "Dylan";
         String welcomeMessage = String.format(" Hello! " + "I'm %s\n" + " What can I do for you?\n", chatbot);
-        if (upcoming.size() == 0) {
+        if (upcoming.isEmpty()) {
             return welcomeMessage;
         }
 
-        StringBuilder results = new StringBuilder(welcomeMessage);
-        results.append("Here is the list of tasks due in 7 days!\n");
-        for (Task t : upcoming) {
-            results.append(t.printTask());
-        }
-        return results.toString();
+        return welcomeMessage + printUpcomingTasks(upcoming);
     }
 
     public String get() {
@@ -54,6 +49,20 @@ public class UI {
             response.append(task.printTask()).append("\n");
         }
         return response.toString();
+    }
+
+    /**
+     * Returns string of upcoming tasks within 7 days.
+     *
+     * @param upcoming
+     * @return
+     */
+    public String printUpcomingTasks(ArrayList<Task> upcoming) {
+        StringBuilder results = new StringBuilder("Here is the list of tasks due in 7 days!\n");
+        for (Task t : upcoming) {
+            results.append(t.printTask());
+        }
+        return results.toString();
     }
 
     /**

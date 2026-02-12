@@ -1,7 +1,7 @@
 package task;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 
 import duke.Storage;
 
@@ -11,14 +11,13 @@ import duke.Storage;
  */
 public class TaskList {
     private ArrayList<Task> listOfTasks;
-    private ArrayList<Task> upcomingTasks;
+    private TreeSet<Task> upcomingTasks;
 
     /**
      * Initiates listofTasks and upcoming tasks
      */
     public TaskList(ArrayList<Task> listOfTasks) {
         this.listOfTasks = listOfTasks;
-        this.upcomingTasks = new ArrayList<>();
         populateUpComingTasks();
     }
 
@@ -26,7 +25,9 @@ public class TaskList {
      * Adds all upcoming tasks (within 7 days) to upcomingTasks List
      */
     public void populateUpComingTasks() {
-        for (Task t : listOfTasks) {
+        this.upcomingTasks = new TreeSet<>(Comparator.comparingInt(Task::getIndex));
+        for (int index = 0; index < listOfTasks.size(); index++) {
+            Task t = listOfTasks.get(index);
             if (t.getClass().getSimpleName().equals("Todos")) {
                 continue;
             }
@@ -42,7 +43,9 @@ public class TaskList {
     }
 
     public ArrayList<Task> getUpcomingTasks() {
-        return this.upcomingTasks;
+        ArrayList<Task> list = new ArrayList<>(upcomingTasks);
+
+        return list;
     }
 
     /**
@@ -53,6 +56,7 @@ public class TaskList {
      */
     public Task deleteTask(Storage storage, int index) throws IOException {
         Task task = listOfTasks.get(index);
+        upcomingTasks.remove(task);
         listOfTasks.remove(index);
         Task.reduceTask();
 
@@ -74,6 +78,9 @@ public class TaskList {
      */
     public void addTask(Storage storage, Task task) throws IOException {
         this.listOfTasks.add(task);
+        if (task.isUpcoming()) {
+            upcomingTasks.add(task);
+        }
         storage.updateDataFile(this);
     }
 
