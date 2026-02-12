@@ -5,13 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
-import command.AddCommand;
-import command.Command;
-import command.DeleteCommand;
-import command.FindCommand;
-import command.ListCommand;
-import command.MarkAsDoneCommand;
-import command.UnmarkAsDoneCommand;
+import command.*;
 import exception.DukeException;
 import task.Task;
 
@@ -56,6 +50,8 @@ public class Parser {
             return createAddEventCommand(sc);
         case "find":
             return createFindCommand(sc);
+        case "reminder":
+            return new ReminderCommand();
         default:
             throw new DukeException(" " + input + " is a invalid command!");
         }
