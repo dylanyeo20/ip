@@ -1,10 +1,11 @@
 package duke;
 
+import java.util.ArrayList;
+
 import command.Command;
 import task.Task;
 import task.TaskList;
 
-import java.util.ArrayList;
 
 /**
  * Main class of Chatbot
@@ -54,7 +55,7 @@ public class Dylan {
     public static void main(String[] args) {
         try {
             Dylan dylan = new Dylan();
-            System.out.println(dylan.ui.printWelcomeMessage());
+            System.out.println(dylan.getWelcomeMessage());
             dylan.run();
         } catch (Exception e) {
             System.out.println("Exiting: " + e.getMessage());
@@ -68,7 +69,7 @@ public class Dylan {
             assert c != null : "Parser returned null in GetResponse";
             c.execute(tasks, ui, storage);
             commandType = c.getClass().getSimpleName();
-            
+
             return c.getString();
         } catch (Exception e) {
             return "Error: " + e.getMessage();
@@ -80,7 +81,8 @@ public class Dylan {
     }
 
     public String getWelcomeMessage() {
-        return ui.printWelcomeMessage();
+        ArrayList<Task> upcomingTasks = tasks.getUpcomingTasks();
+        return ui.printWelcomeMessage(upcomingTasks);
     }
 
 }

@@ -1,5 +1,6 @@
 package task;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 /**
@@ -38,6 +39,18 @@ public class Event extends Task {
         super(name, 'E', isTaskDone);
         this.from = from;
         this.to = to;
+    }
+
+    /**
+     * Checks if event is within 7 days
+     *
+     * @return
+     */
+    public boolean isUpcoming() {
+        LocalDateTime now = LocalDateTime.now();
+        long daysToEvent = Duration.between(now, from).toDays();
+
+        return (daysToEvent >= 0 && daysToEvent <= 7);
     }
 
     @Override

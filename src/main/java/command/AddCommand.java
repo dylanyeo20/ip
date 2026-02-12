@@ -39,7 +39,7 @@ public class AddCommand extends Command {
         tasks.addTask(storage, task);
         response = ui.printAddTask(task);
 
-        assert response.startsWith("Noted. I've removed this task:") : "Invalid response format for Delete Command";
+        assert response.startsWith("Got it. I've added this task:") : "Invalid response format for Add Command";
     }
 
     @Override

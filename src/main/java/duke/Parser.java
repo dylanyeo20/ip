@@ -117,8 +117,6 @@ public class Parser {
         if (index < 0 || index >= Task.totalTask()) {
             throw new DukeException((index + 1) + " is a invalid index!");
         }
-
-
         return new DeleteCommand(index);
     }
 

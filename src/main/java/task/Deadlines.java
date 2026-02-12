@@ -1,5 +1,6 @@
 package task;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 
@@ -37,6 +38,16 @@ public class Deadlines extends Task {
         this.by = by;
     }
 
+    /**
+     * Checks if deadline tasks is due within 7 days.
+     */
+    public boolean isUpcoming() {
+        LocalDateTime now = LocalDateTime.now();
+        long daysToEvent = Duration.between(now, by).toDays();
+
+        return (daysToEvent >= 0 && daysToEvent <= 7);
+    }
+
     @Override
     public String getStatus() {
         String output = String.format("%s (by: %s)", super.getStatus(), by.format(DATE_DISPLAY_FORMAT));
@@ -50,3 +61,4 @@ public class Deadlines extends Task {
     }
 
 }
+

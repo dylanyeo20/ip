@@ -11,13 +11,38 @@ import duke.Storage;
  */
 public class TaskList {
     private ArrayList<Task> listOfTasks;
+    private ArrayList<Task> upcomingTasks;
 
+    /**
+     * Initiates listofTasks and upcoming tasks
+     */
     public TaskList(ArrayList<Task> listOfTasks) {
         this.listOfTasks = listOfTasks;
+        this.upcomingTasks = new ArrayList<>();
+        populateUpComingTasks();
     }
+
+    /**
+     * Adds all upcoming tasks (within 7 days) to upcomingTasks List
+     */
+    public void populateUpComingTasks() {
+        for (Task t : listOfTasks) {
+            if (t.getClass().getSimpleName().equals("Todos")) {
+                continue;
+            }
+            if (t.isUpcoming()) {
+                upcomingTasks.add(t);
+            }
+        }
+    }
+
 
     public ArrayList<Task> get() {
         return this.listOfTasks;
+    }
+
+    public ArrayList<Task> getUpcomingTasks() {
+        return this.upcomingTasks;
     }
 
     /**

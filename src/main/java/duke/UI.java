@@ -22,9 +22,19 @@ public class UI {
     /**
      * Prints welcome message
      */
-    public String printWelcomeMessage() {
+    public String printWelcomeMessage(ArrayList<Task> upcoming) {
         String chatbot = "Dylan";
-        return String.format(" Hello! " + "I'm %s\n" + " What can I do for you?\n", chatbot);
+        String welcomeMessage = String.format(" Hello! " + "I'm %s\n" + " What can I do for you?\n", chatbot);
+        if (upcoming.size() == 0) {
+            return welcomeMessage;
+        }
+
+        StringBuilder results = new StringBuilder(welcomeMessage);
+        results.append("Here is the list of tasks due in 7 days!\n");
+        for (Task t : upcoming) {
+            results.append(t.printTask());
+        }
+        return results.toString();
     }
 
     public String get() {

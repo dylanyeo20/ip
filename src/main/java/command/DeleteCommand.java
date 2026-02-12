@@ -25,7 +25,7 @@ public class DeleteCommand extends Command {
 
         Task deletedTask = tasks.deleteTask(storage, index);
         response = ui.printDeleteTask(deletedTask);
-        assert response.startsWith("Got it. I've added this task:") : "Invalid response format for Add Command";
+        assert response.startsWith("Noted. I've removed this task:") : "Invalid response format for delete Command";
     }
 
     @Override

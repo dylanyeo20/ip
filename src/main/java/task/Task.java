@@ -83,6 +83,10 @@ public class Task {
         return this.isDone ? "x" : " ";
     }
 
+    public boolean isUpcoming() {
+        return false;
+    }
+
     /**
      * Returns the status of the task.
      * <p>
