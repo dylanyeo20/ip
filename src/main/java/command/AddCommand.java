@@ -32,8 +32,14 @@ public class AddCommand extends Command {
 
     @Override
     public void execute(TaskList tasks, UI ui, Storage storage) throws Exception {
+        assert tasks != null : "TaskList should not be null";
+        assert ui != null : "UI should not be null";
+        assert storage != null : "Storage should not be null";
+
         tasks.addTask(storage, task);
         response = ui.printAddTask(task);
+
+        assert response.startsWith("Noted. I've removed this task:") : "Invalid response format for Delete Command";
     }
 
     @Override
