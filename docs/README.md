@@ -126,5 +126,7 @@ reminder
 * Task indices start from **1**.
 * Date and time format must follow: **dd/mm/yyyy hhmm**
 * Commands are **case-sensitive**.
+* Works on the following systems: Windows 11 Home, Kali Linux 2024.2 (Rolling) Debian-based, macOS 15.7.3
+
 
 
