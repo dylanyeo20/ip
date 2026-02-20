@@ -33,4 +33,24 @@ commandType = c.getClass().getSimpleName();
 
 **Comments:**
 Help me quickly provide documentation for the above code, which is
-easily understandable by other coders. 
+easily understandable by other coders.
+
+**Prompt**
+How do we add a title to the windows of my app?
+
+**output**
+Option 1 (Recommended): Set title in your main Application class
+Find your class that extends Application (usually Launcher, Main, or Duke).
+Example:
+@Override
+public void start(Stage stage) throws IOException {
+FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("MainWindow.fxml"));
+Scene scene = new Scene(fxmlLoader.load());
+
+    stage.setTitle("Dylan Assistant");  // ⭐ SET TITLE HERE
+    stage.setScene(scene);
+    stage.show();
+
+}
+This is the proper JavaFX way
+Clean separation of UI and window config
