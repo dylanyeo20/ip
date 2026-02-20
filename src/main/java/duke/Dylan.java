@@ -63,6 +63,18 @@ public class Dylan {
         }
     }
 
+    /**
+     * Processes the user's input and returns the command response.
+     *
+     * <p>This method parses the input into a {@code Command}, executes it,
+     * records the command type, and returns the resulting message.
+     * If any error occurs during parsing or execution, an error message
+     * is returned instead.</p>
+     *
+     * @param input The raw user input string.
+     * @return The response message from the executed command,
+     * or an error message if execution fails.
+     */
     public String getResponse(String input) {
         try {
             Command c = Parser.parse(input);
