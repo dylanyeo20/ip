@@ -1,6 +1,6 @@
 # Dylan's Chatbot User Guide
 
-![Product Screenshot](./Ui.png)
+![Product Screenshot](./docs/Ui.png)
 
 **Dylan** is a lightweight CLI chatbot that helps you manage your tasks, deadlines, and upcoming events.
 Simply add your items and let Dylan handle the tracking for you!
